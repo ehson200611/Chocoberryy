@@ -16,8 +16,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1', 
     '0.0.0.0',
-    '0.0.0.0:8076',  # Your specific port
-    '127.0.0.1:8076',
+    '0.0.0.0:8075',  # Your specific port
+    '127.0.0.1:8075',
 ]
 
 INSTALLED_APPS = [
