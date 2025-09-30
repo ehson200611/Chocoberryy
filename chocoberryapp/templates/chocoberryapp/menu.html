@@ -1,0 +1,608 @@
+{% extends 'chocoberryapp/base.html' %}
+{% block content %}
+<div class="menu-page">
+    <!-- بخش هیرو -->
+    <section class="menu-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Our Menu<br><span class="tajik-text">Менюи мо</span></h1>
+            <p class="hero-description">
+                Discover our delicious chocolate creations and fresh treats<br>
+                <span class="tajik-text">Маҳсулоти ширинии мо ва меваҳои тозаро кашф кунед</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- بخش جستجو و فیلتر -->
+    <section class="search-filter-section">
+        <div class="search-container">
+            <form class="search-form" method="get">
+                <div class="search-input-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="q" placeholder="Search products (Ҷустуҷӯи маҳсулот)" value="{{ request.GET.q }}">
+                    <button type="submit" class="btn-search">
+                        <i class="fas fa-search"></i>
+                        Search (Ҷустуҷӯ)
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- دسته‌بندی‌ها -->
+        <div class="categories-section">
+            <h2>Categories<br><span class="tajik-text">Категорияҳо</span></h2>
+            <div class="categories-grid">
+                <a href="?" class="category-chip {% if not request.GET.q %}active{% endif %}">
+                    All Products (Ҳама)
+                </a>
+                {% for cat in categories %}
+                <a href="?q={{ cat }}" class="category-chip {% if request.GET.q == cat %}active{% endif %}">
+                    {{ cat }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش محصولات -->
+    <section class="products-section">
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% else %}
+                        <div class="image-placeholder">
+                            <i class="fas fa-cookie-bite"></i>
+                        </div>
+                    {% endif %}
+                    {% if product.is_popular %}
+                    <div class="product-badge popular">Popular</div>
+                    {% endif %}
+                    {% if product.is_new %}
+                    <div class="product-badge new">New</div>
+                    {% endif %}
+                </div>
+                
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+                    
+                    <div class="product-meta">
+                        <div class="product-price">{{ product.price }} TJS</div>
+                        {% if product.category %}
+                        <div class="product-category">{{ product.category }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn btn-add-to-cart" data-product="{{ product.name }}" data-price="{{ product.price }}">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart (Ба сабат)
+                        </button>
+                        <button class="btn btn-wishlist">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- حالت بدون محصول -->
+        <div class="no-results">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>No results found<br><span class="tajik-text">Натиҷаҳо ёфт нашуданд</span></h3>
+            <p>Try searching with different keywords or browse all categories<br>
+            <span class="tajik-text">Бо калимаҳои дигар ҷустуҷӯ кунед ё ҳама категорияҳоро бубинед</span></p>
+            <a href="?" class="btn btn-primary">View All Products (Дидани ҳама маҳсулот)</a>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- بخش CTA -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Can't find what you're looking for?<br><span class="tajik-text">Он чиро, ки меҷӯед, наёфтед?</span></h2>
+            <p>We offer custom orders! Contact us to create your perfect treat<br>
+            <span class="tajik-text">Мо фармоишҳои фардӣ пешниҳод мекунем! Барои офаридани маҳсулоти комили худ бо мо тамос гиред</span></p>
+            <a href="{% url 'about' %}" class="btn btn-primary">
+                <i class="fas fa-phone"></i>
+                Contact Us (Тамос)
+            </a>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* استایل‌های عمومی */
+    .menu-page {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+
+    .tajik-text {
+        display: block;
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 5px;
+        font-weight: normal;
+        line-height: 1.4;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ff69b4, #ff4081);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+    }
+
+    /* بخش هیرو */
+    .menu-hero {
+        background: linear-gradient(135deg, #fff9fb, #ffeef4);
+        padding: 60px 0;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .hero-description {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* بخش جستجو و فیلتر */
+    .search-filter-section {
+        max-width: 1200px;
+        margin: 0 auto 40px;
+        padding: 0 20px;
+    }
+
+    .search-container {
+        margin-bottom: 30px;
+    }
+
+    .search-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .search-input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 50px;
+        padding: 5px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 2px solid #f0f0f0;
+        transition: all 0.3s ease;
+    }
+
+    .search-input-group:focus-within {
+        border-color: #ff69b4;
+        box-shadow: 0 4px 20px rgba(255, 105, 180, 0.2);
+    }
+
+    .search-input-group i:first-child {
+        position: absolute;
+        left: 20px;
+        color: #999;
+        z-index: 1;
+    }
+
+    .search-input-group input {
+        flex: 1;
+        padding: 15px 50px 15px 45px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        outline: none;
+        background: transparent;
+    }
+
+    .btn-search {
+        background: linear-gradient(135deg, #ff69b4, #ff4081);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-search:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+    }
+
+    /* دسته‌بندی‌ها */
+    .categories-section h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 1.5rem;
+    }
+
+    .categories-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .category-chip {
+        display: inline-block;
+        padding: 10px 20px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        text-decoration: none;
+        color: #666;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .category-chip:hover {
+        border-color: #ff69b4;
+        color: #ff69b4;
+        transform: translateY(-2px);
+    }
+
+    .category-chip.active {
+        background: linear-gradient(135deg, #ff69b4, #ff4081);
+        color: white;
+        border-color: #ff69b4;
+    }
+
+    /* بخش محصولات */
+    .products-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+
+    .image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+        color: white;
+    }
+
+    .image-placeholder i {
+        font-size: 3rem;
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .product-badge.popular {
+        background: #ff4081;
+    }
+
+    .product-badge.new {
+        background: #4CAF50;
+    }
+
+    .product-info {
+        padding: 20px;
+    }
+
+    .product-name {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: #333;
+        line-height: 1.3;
+    }
+
+    .product-description {
+        color: #666;
+        margin-bottom: 15px;
+        line-height: 1.5;
+        font-size: 0.9rem;
+    }
+
+    .product-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ff69b4;
+    }
+
+    .product-category {
+        background: #f0f0f0;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .product-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-add-to-cart {
+        flex: 1;
+        background: #4CAF50;
+        color: white;
+        justify-content: center;
+    }
+
+    .btn-add-to-cart:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .btn-wishlist {
+        background: #f8f9fa;
+        color: #666;
+        padding: 10px 15px;
+    }
+
+    .btn-wishlist:hover {
+        background: #ffebee;
+        color: #ff4081;
+    }
+
+    /* حالت بدون نتیجه */
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .no-results-icon {
+        font-size: 4rem;
+        color: #ffb6c1;
+        margin-bottom: 20px;
+    }
+
+    .no-results h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .no-results p {
+        margin-bottom: 30px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* بخش CTA */
+    .cta-section {
+        background: linear-gradient(135deg, #fff9fb, #ffeef4);
+        padding: 60px 20px;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .cta-content h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .cta-content p {
+        margin-bottom: 25px;
+        color: #666;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* رسپانسیو */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .search-input-group {
+            flex-direction: column;
+            border-radius: 15px;
+            padding: 0;
+        }
+
+        .search-input-group input {
+            border-radius: 15px 15px 0 0;
+            padding: 15px 20px;
+        }
+
+        .btn-search {
+            border-radius: 0 0 15px 15px;
+            width: 100%;
+        }
+
+        .categories-grid {
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .category-chip {
+            white-space: nowrap;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 1.7rem;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .product-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .product-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    // مدیریت سبد خرید
+    document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const productName = this.getAttribute('data-product');
+            const productPrice = this.getAttribute('data-price');
+            
+            // نمایش پیام موفقیت
+            this.innerHTML = '<i class="fas fa-check"></i> Added!';
+            this.style.background = '#4CAF50';
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-shopping-cart"></i> Add to Cart (Ба сабат)';
+                this.style.background = '';
+            }, 2000);
+            
+            // در اینجا می‌توانید منطق افزودن به سبد خرید را اضافه کنید
+            console.log(`Added to cart: ${productName} - ${productPrice} TJS`);
+        });
+    });
+
+    // مدیریت علاقه‌مندی‌ها
+    document.querySelectorAll('.btn-wishlist').forEach(button => {
+        button.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.replace('far', 'fas');
+                icon.style.color = '#ff4081';
+                // افزودن به علاقه‌مندی‌ها
+            } else {
+                icon.classList.replace('fas', 'far');
+                icon.style.color = '';
+                // حذف از علاقه‌مندی‌ها
+            }
+        });
+    });
+
+    // اسکرول نرم برای دسته‌بندی‌ها
+    document.querySelectorAll('.category-chip').forEach(chip => {
+        chip.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '?') {
+                e.preventDefault();
+                window.scrollTo({
+                    top: document.querySelector('.products-section').offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // نمایش تعداد نتایج
+    document.addEventListener('DOMContentLoaded', function() {
+        const productCount = document.querySelectorAll('.product-card').length;
+        if (productCount > 0) {
+            const resultsText = document.createElement('div');
+            resultsText.className = 'results-count';
+            resultsText.style.textAlign = 'center';
+            resultsText.style.marginBottom = '20px';
+            resultsText.style.color = '#666';
+            resultsText.innerHTML = `Showing ${productCount} product${productCount !== 1 ? 's' : ''}<br>
+            <span class="tajik-text">${productCount} маҳсулот нишон дода мешавад</span>`;
+            
+            document.querySelector('.products-section').insertBefore(resultsText, document.querySelector('.products-grid'));
+        }
+    });
+</script>
+{% endblock %}

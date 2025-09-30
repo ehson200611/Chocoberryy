@@ -1,0 +1,687 @@
+{% extends 'chocoberryapp/base.html' %}
+{% block content %}
+<div class="locations-page">
+    <!-- بخش هیرو -->
+    <section class="locations-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Our Locations<br><span class="tajik-text">Ҷойҳои мо</span></h1>
+            <p class="hero-description">
+                Visit us at our convenient locations in Dushanbe<br>
+                <span class="tajik-text">Моро дар ҷойҳои муносиби Душанбе ташриф оред</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- بخش موقعیت‌ها -->
+    <section class="locations-section">
+        <div class="locations-container">
+            {% for location in locations %}
+            <div class="location-card">
+                <div class="location-info">
+                    <div class="location-header">
+                        <h2 class="location-name">{{ location.name }}</h2>
+                        <div class="location-status open">Open Now<br><span class="tajik-text">Кушода аст</span></div>
+                    </div>
+                    
+                    <div class="location-details">
+                        <div class="detail-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Address<br><span class="tajik-text">Суроға</span></h4>
+                                <p>{{ location.address }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Working Hours<br><span class="tajik-text">Соатҳои корӣ</span></h4>
+                                <p>{{ location.hours }}<br><span class="tajik-text">{{ location.hours_tajik }}</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Phone Number<br><span class="tajik-text">Рақами телефон</span></h4>
+                                <p>
+                                    <a href="tel:{{ location.phone }}" class="phone-link">
+                                        {{ location.phone }}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="location-description">
+                        <p>{{ location.description }}</p>
+                    </div>
+                    
+                    <div class="location-actions">
+                        <a href="tel:{{ location.phone }}" class="btn btn-call">
+                            <i class="fas fa-phone"></i>
+                            Call Now (Занг занед)
+                        </a>
+                        <button class="btn btn-directions" data-address="{{ location.address }}">
+                            <i class="fas fa-directions"></i>
+                            Get Directions (Роҳнамо)
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="location-map">
+                    <div class="map-container">
+                        {% if location.map_embed %}
+                            {{ location.map_embed|safe }}
+                        {% else %}
+                            <!-- نقشه پیش‌فرض برای Chocoberry TJK در Dushanbe -->
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2995.789318666375!2d68.77288131542473!3d38.579902979267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b5d15a00000000%3A0x1234567890abcdef!2sDushanbe%2C%20Tajikistan!5e0!3m2!1sen!2s!4v1690000000000" 
+                                width="100%" 
+                                height="300" 
+                                style="border:0; border-radius: 10px;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- حالت پیش‌فرض زمانی که هیچ موقعیتی تعریف نشده -->
+            <div class="no-locations">
+                <div class="default-locations">
+                    <div class="location-card">
+                        <div class="location-info">
+                            <div class="location-header">
+                                <h2 class="location-name">Chocoberry TJK Main Store<br><span class="tajik-text">Мағозаи асосии Chocoberry TJK</span></h2>
+                                <div class="location-status open">Open Now<br><span class="tajik-text">Кушода аст</span></div>
+                            </div>
+                            
+                            <div class="location-details">
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <h4>Address<br><span class="tajik-text">Суроға</span></h4>
+                                        <p>Rudaki Avenue, Dushanbe, Tajikistan<br><span class="tajik-text">Проспекти Рӯдакӣ, Душанбе, Тоҷикистон</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <h4>Working Hours<br><span class="tajik-text">Соатҳои корӣ</span></h4>
+                                        <p>Mon-Sun: 8:00 AM - 10:00 PM<br><span class="tajik-text">Душанбе-Якшанбе: 8:00 - 22:00</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <h4>Phone Number<br><span class="tajik-text">Рақами телефон</span></h4>
+                                        <p>
+                                            <a href="tel:+992123456789" class="phone-link">
+                                                +992 12 345-67-89
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="location-description">
+                                <p>Our flagship store in the heart of Dushanbe, offering the complete range of our chocolate-dipped strawberries and custom treats.<br>
+                                <span class="tajik-text">Мағозаи асосии мо дар маркази Душанбе, ки тамоми гамму маҳсулоти шоколадии моро пешниҳод мекунад.</span></p>
+                            </div>
+                            
+                            <div class="location-actions">
+                                <a href="tel:+992123456789" class="btn btn-call">
+                                    <i class="fas fa-phone"></i>
+                                    Call Now (Занг занед)
+                                </a>
+                                <button class="btn btn-directions" data-address="Rudaki Avenue, Dushanbe, Tajikistan">
+                                    <i class="fas fa-directions"></i>
+                                    Get Directions (Роҳнамо)
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="location-map">
+                            <div class="map-container">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2995.789318666375!2d68.77288131542473!3d38.579902979267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b5d15a00000000%3A0x1234567890abcdef!2sDushanbe%2C%20Tajikistan!5e0!3m2!1sen!2s!4v1690000000000" 
+                                    width="100%" 
+                                    height="300" 
+                                    style="border:0; border-radius: 10px;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="location-card">
+                        <div class="location-info">
+                            <div class="location-header">
+                                <h2 class="location-name">Chocoberry TJK - Delivery Center<br><span class="tajik-text">Маркази интиқоли Chocoberry TJK</span></h2>
+                                <div class="location-status open">Open Now<br><span class="tajik-text">Кушода аст</span></div>
+                            </div>
+                            
+                            <div class="location-details">
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <h4>Address<br><span class="tajik-text">Суроға</span></h4>
+                                        <p>Ismoili Somoni Street, Dushanbe<br><span class="tajik-text">Кӯчаи Исмоили Сомонӣ, Душанбе</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <h4>Working Hours<br><span class="tajik-text">Соатҳои корӣ</span></h4>
+                                        <p>24/7 Delivery Service<br><span class="tajik-text">Хизмати интиқол 24/7</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <h4>Phone Number<br><span class="tajik-text">Рақами телефон</span></h4>
+                                        <p>
+                                            <a href="tel:+992987654321" class="phone-link">
+                                                +992 98 765-43-21
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="location-description">
+                                <p>Our dedicated delivery center for fast and fresh chocolate treats across Dushanbe. Place your order for quick delivery!<br>
+                                <span class="tajik-text">Маркази махсуси интиқоли мо барои расонидани маҳсулоти шоколадии тоза дар тамоми Душанбе. Барои интиқоли зуд фармоиш диҳед!</span></p>
+                            </div>
+                            
+                            <div class="location-actions">
+                                <a href="tel:+992987654321" class="btn btn-call">
+                                    <i class="fas fa-phone"></i>
+                                    Call Now (Занг занед)
+                                </a>
+                                <button class="btn btn-directions" data-address="Ismoili Somoni Street, Dushanbe">
+                                    <i class="fas fa-directions"></i>
+                                    Get Directions (Роҳнамо)
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="location-map">
+                            <div class="map-container">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.258394448885!2d68.78625831542438!3d38.57352497926487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b5d15a00000000%3A0xfed4567890abcdef!2sDushanbe%2C%20Tajikistan!5e0!3m2!1sen!2s!4v1690000000001" 
+                                    width="100%" 
+                                    height="300" 
+                                    style="border:0; border-radius: 10px;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- بخش CTA -->
+    <section class="locations-cta">
+        <div class="cta-content">
+            <h2>Can't visit us in person?<br><span class="tajik-text">Наметавонед ба мо ташриф оред?</span></h2>
+            <p>We offer fast delivery throughout Dushanbe! Order online and get fresh chocolate treats delivered to your door.<br>
+            <span class="tajik-text">Мо интиқоли зуд дар тамоми Душанбе пешниҳод мекунем! Дар интернет фармоиш диҳед ва маҳсулоти шоколадии тозаро ба дари хона гиред.</span></p>
+            <div class="cta-buttons">
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag"></i>
+                    Order Online (Фармоиш дар интернет)
+                </a>
+                <a href="tel:+992123456789" class="btn btn-secondary">
+                    <i class="fas fa-phone"></i>
+                    Call to Order (Барои фармоиш занг занед)
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* استایل‌های عمومی */
+    .locations-page {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+
+    .tajik-text {
+        display: block;
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 5px;
+        font-weight: normal;
+        line-height: 1.4;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ff69b4, #ff4081);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #ff69b4;
+        border: 2px solid #ff69b4;
+    }
+
+    .btn-secondary:hover {
+        background: #fff9fb;
+    }
+
+    /* بخش هیرو */
+    .locations-hero {
+        background: linear-gradient(135deg, #fff9fb, #ffeef4);
+        padding: 60px 0;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .hero-description {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* بخش موقعیت‌ها */
+    .locations-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .locations-container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .location-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .location-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .location-info {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .location-header {
+        display: flex;
+        justify-content: between;
+        align-items: flex-start;
+        margin-bottom: 25px;
+        gap: 20px;
+    }
+
+    .location-name {
+        flex: 1;
+        font-size: 1.5rem;
+        color: #333;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .location-status {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .location-status.open {
+        background: #e8f5e8;
+        color: #2e7d32;
+    }
+
+    .location-status.closed {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .location-details {
+        margin-bottom: 25px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .detail-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .detail-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .detail-content h4 {
+        margin: 0 0 5px 0;
+        color: #333;
+        font-size: 1rem;
+    }
+
+    .detail-content p {
+        margin: 0;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .phone-link {
+        color: #ff69b4;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .phone-link:hover {
+        color: #ff4081;
+    }
+
+    .location-description {
+        flex: 1;
+        margin-bottom: 25px;
+    }
+
+    .location-description p {
+        color: #666;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .location-actions {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-call {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .btn-call:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .btn-directions {
+        background: #2196F3;
+        color: white;
+    }
+
+    .btn-directions:hover {
+        background: #1976D2;
+        transform: translateY(-2px);
+    }
+
+    .location-map {
+        padding: 0;
+    }
+
+    .map-container {
+        height: 100%;
+        min-height: 400px;
+    }
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* حالت بدون موقعیت */
+    .no-locations {
+        text-align: center;
+    }
+
+    .default-locations {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    /* بخش CTA */
+    .locations-cta {
+        background: linear-gradient(135deg, #fff9fb, #ffeef4);
+        padding: 60px 20px;
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    .cta-content h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .cta-content p {
+        margin-bottom: 30px;
+        color: #666;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* رسپانسیو */
+    @media (max-width: 968px) {
+        .location-card {
+            grid-template-columns: 1fr;
+        }
+        
+        .location-map {
+            min-height: 300px;
+        }
+        
+        .map-container {
+            min-height: 300px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .location-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .location-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .cta-buttons .btn {
+            width: auto;
+            min-width: 250px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 1.7rem;
+        }
+        
+        .location-info {
+            padding: 20px;
+        }
+        
+        .detail-item {
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+        }
+        
+        .detail-icon {
+            align-self: center;
+        }
+    }
+</style>
+
+<script>
+    // مدیریت دکمه‌های مسیریابی
+    document.querySelectorAll('.btn-directions').forEach(button => {
+        button.addEventListener('click', function() {
+            const address = this.getAttribute('data-address');
+            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+            window.open(googleMapsUrl, '_blank');
+        });
+    });
+
+    // بررسی وضعیت باز بودن فروشگاه
+    function checkBusinessHours() {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+        
+        // فرض: فروشگاه از 8 صبح تا 10 شب باز است (به جز یکشنبه)
+        const isOpen = currentHour >= 8 && currentHour < 22 && currentDay !== 0;
+        
+        document.querySelectorAll('.location-status').forEach(status => {
+            if (!isOpen) {
+                status.textContent = 'Closed Now';
+                status.className = 'location-status closed';
+                if (status.querySelector('.tajik-text')) {
+                    status.querySelector('.tajik-text').textContent = 'Пӯшида аст';
+                }
+            }
+        });
+    }
+
+    // اجرای بررسی وضعیت هنگام لود صفحه
+    document.addEventListener('DOMContentLoaded', checkBusinessHours);
+
+    // انیمیشن اسکرول برای کارت‌ها
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // مشاهده کارت‌های موقعیت برای انیمیشن
+    document.querySelectorAll('.location-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+</script>
+{% endblock %}
