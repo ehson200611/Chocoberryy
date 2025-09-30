@@ -10,8 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = 'django-insecure-gq21a7k9x@ur0z1c0kg5!2b4g&!cu@-p-(pij!8!rx)sg#v5q0'
-DEBUG = False
+DEBUG = True
 
+# Fix ALLOWED_HOSTS - add your development hosts
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1', 
@@ -20,6 +21,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1:8076',
 ]
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,7 +55,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',  # Add this line
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -93,9 +95,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+
+# Remove or fix the STATICFILES_DIRS - choose one option:
+
+# Option 1: Remove if you don't have custom static files
+STATICFILES_DIRS = []
+
+# Option 2: Or create the directory and keep this:
+# STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Option 3: Use app-specific static directories only
+# STATICFILES_DIRS = [BASE_DIR / "chocoberryapp/static"]
+
+# For production (optional)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (Uploaded images)
 MEDIA_URL = '/media/'
