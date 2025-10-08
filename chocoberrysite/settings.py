@@ -12,13 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gq21a7k9x@ur0z1c0kg5!2b4g&!cu@-p-(pij!8!rx)sg#v5q0'
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1', 
-    '0.0.0.0',
-    '0.0.0.0:8075',  # Your specific port
-    '127.0.0.1:8075',
-]
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
