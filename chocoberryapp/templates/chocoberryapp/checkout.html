@@ -1,0 +1,94 @@
+{% extends 'chocoberryapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="h4 fw-bold mb-3">Тайёр кардани фармоиш</h1>
+    
+    {% if not user.is_authenticated %}
+    <div class="alert alert-warning mb-3">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Шумо чун меҳмон фармоиш медиҳед. 
+        <a href="{% url 'login' %}?next={% url 'checkout' %}" class="alert-link">Вуруд шавед</a> барои суръатбахши фармоиш!
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12">
+            <!-- Customer Information -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="fas fa-user-circle me-2"></i>Маълумоти муштарӣ
+                    </h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Ному насаб *</label>
+                            <input type="text" name="customer_name" class="form-control" 
+                                   value="{{ form.customer_name.value|default:'' }}" 
+                                   placeholder="Ному насаби пурра" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Почтаи электронӣ *</label>
+                            <input type="email" name="customer_email" class="form-control" 
+                                   value="{{ form.customer_email.value|default:'' }}" 
+                                   placeholder="Почтаи электронӣ" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Рақами телефон *</label>
+                            <input type="text" name="customer_phone" class="form-control" 
+                                   value="{{ form.customer_phone.value|default:'' }}" 
+                                   placeholder="Рақами телефон" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Суроғаи расонидан</label>
+                            <textarea name="customer_address" class="form-control" 
+                                      rows="2" placeholder="Суроғаи расонидан (агар лозим бошад)">{{ form.customer_address.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Дастурҳои иловагӣ</label>
+                            <textarea name="notes" class="form-control" 
+                                      rows="2" placeholder="Дастурҳои иловагӣ">{{ form.notes.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-check me-2"></i>Сабти фармоиш
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="fas fa-receipt me-2"></i>Ҳисоби фармоиш
+                    </h5>
+                    {% for item in cart_items %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <div>
+                            <strong>{{ item.product.name }}</strong>
+                            <br>
+                            <small class="text-muted">Миқдор: {{ item.quantity }} × ${{ item.product.price }}</small>
+                        </div>
+                        <span class="fw-bold">${{ item.total }}</span>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Ҳаҷми умумӣ:</strong>
+                        <strong class="text-primary">${{ total_price }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
